@@ -26,8 +26,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  LanguageSwitcher,
+  SupportedLocale,
+} from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
-import { useIntl } from "react-intl";
 
 interface NavUserProps {
   user: {
@@ -35,42 +38,51 @@ interface NavUserProps {
     email: string;
     avatar: string;
   };
+  direction?: "rtl" | "ltr";
+  locale?: SupportedLocale;
+  onLocaleChange?: (locale: SupportedLocale) => void;
+  translations?: {
+    upgrade?: string;
+    account?: string;
+    billing?: string;
+    notifications?: string;
+    logout?: string;
+  };
 }
 
-export function NavUser({ user }: NavUserProps) {
+export function NavUser({
+  user,
+  direction = "ltr",
+  locale = "en",
+  onLocaleChange,
+  translations = {},
+}: NavUserProps) {
   const { isMobile, state } = useSidebar();
   const isCollapsed = state === "collapsed";
+  const isRtl = direction === "rtl";
 
-  // Get direction from html element
-  const isRtl =
-    typeof document !== "undefined"
-      ? document.documentElement.dir === "rtl"
-      : false;
-
-  // Use React Intl directly since we're in MainLayout which has IntlProvider
-  const intl = useIntl();
-
-  const t = (id: string) => {
-    try {
-      return intl.formatMessage({ id });
-    } catch (e) {
-      // Fallback values if message is not found
-      const fallbacks: Record<string, string> = {
-        "user.upgrade": "Upgrade",
-        "user.account": "Account",
-        "user.billing": "Billing",
-        "user.notifications": "Notifications",
-        "user.logout": "Log out",
-      };
-      return fallbacks[id] || id;
-    }
-  };
+  // Default fallback translations
+  const {
+    upgrade = "Upgrade",
+    account = "Account",
+    billing = "Billing",
+    notifications = "Notifications",
+    logout = "Log out",
+  } = translations;
 
   // Display name based on language
   const displayName = isRtl ? "صارف" : user.name;
 
   return (
     <SidebarMenu>
+      {onLocaleChange && (
+        <SidebarMenuItem>
+          <LanguageSwitcher
+            currentLocale={locale}
+            onLocaleChange={onLocaleChange}
+          />
+        </SidebarMenuItem>
+      )}
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -169,9 +181,7 @@ export function NavUser({ user }: NavUserProps) {
                   )}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span className={isRtl ? "font-urdu" : ""}>
-                    {t("user.upgrade")}
-                  </span>
+                  <span className={isRtl ? "font-urdu" : ""}>{upgrade}</span>
                 </div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -187,9 +197,7 @@ export function NavUser({ user }: NavUserProps) {
                   )}
                 >
                   <BadgeCheck className="h-4 w-4" />
-                  <span className={isRtl ? "font-urdu" : ""}>
-                    {t("user.account")}
-                  </span>
+                  <span className={isRtl ? "font-urdu" : ""}>{account}</span>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -202,9 +210,7 @@ export function NavUser({ user }: NavUserProps) {
                   )}
                 >
                   <CreditCard className="h-4 w-4" />
-                  <span className={isRtl ? "font-urdu" : ""}>
-                    {t("user.billing")}
-                  </span>
+                  <span className={isRtl ? "font-urdu" : ""}>{billing}</span>
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -218,7 +224,7 @@ export function NavUser({ user }: NavUserProps) {
                 >
                   <Bell className="h-4 w-4" />
                   <span className={isRtl ? "font-urdu" : ""}>
-                    {t("user.notifications")}
+                    {notifications}
                   </span>
                 </div>
               </DropdownMenuItem>
@@ -234,9 +240,7 @@ export function NavUser({ user }: NavUserProps) {
                 )}
               >
                 <LogOut className="h-4 w-4" />
-                <span className={isRtl ? "font-urdu" : ""}>
-                  {t("user.logout")}
-                </span>
+                <span className={isRtl ? "font-urdu" : ""}>{logout}</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

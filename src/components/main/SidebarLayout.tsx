@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import MainLayout from "@/components/main/MainLayout";
 import { SupportedLocale } from "@/components/LanguageSwitcher";
 
@@ -17,15 +17,25 @@ export default function DashboardLayout({
   locale = "en",
   onLocaleChange,
 }: DashboardLayoutProps) {
+  // Immediately calculate the direction based on locale
+  const currentDirection = locale === "ur" ? "rtl" : "ltr";
+
+  console.log("locale:", locale, "currentDirection:", currentDirection);
+
+  // Update direction when locale changes
+  useEffect(() => {
+    if (locale === "ur") {
+      document.documentElement.dir = "rtl";
+      document.documentElement.lang = "ur";
+    } else {
+      document.documentElement.dir = "ltr";
+      document.documentElement.lang = locale;
+    }
+  }, [locale]);
+
   return (
-    <div dir={direction}>
-      <MainLayout
-        direction={direction}
-        locale={locale}
-        onLocaleChange={onLocaleChange}
-      >
-        {children}
-      </MainLayout>
-    </div>
+    <MainLayout locale={locale} onLocaleChange={onLocaleChange}>
+      {children}
+    </MainLayout>
   );
 }

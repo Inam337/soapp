@@ -1,102 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { IntlProvider, useIntl } from "react-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, ChevronLeft, Globe, User, Users } from "lucide-react";
-import {
-  LanguageSwitcher,
-  SupportedLocale as LanguageSwitcherLocale,
-} from "@/components/LanguageSwitcher";
+import { useIntl } from "react-intl";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import OnboardingLayout from "@/components/main/LandingLayout";
 import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
 
-// Define RTL locales
-const rtlLocales = ["ur"];
-
-// Define supported locales to match LanguageSwitcher
-type SupportedLocale = LanguageSwitcherLocale;
-const supportedLocales = ["en", "es", "fr", "de", "ur"] as const;
-
-// Load all translation messages
-const messages: Record<string, Record<string, string>> = {
-  en: require("@/locales/en.json"),
-  es: require("@/locales/es.json"),
-  fr: require("@/locales/fr.json"),
-  de: require("@/locales/de.json"),
-  ur: require("@/locales/ur.json"),
-};
-
-// Standalone locale detection
-function getDefaultLocale(): SupportedLocale {
-  // Try to get from cookie
-  const savedLocale = getCookie("NEXT_LOCALE");
-  if (
-    savedLocale &&
-    supportedLocales.includes(savedLocale.toString() as SupportedLocale)
-  ) {
-    return savedLocale.toString() as SupportedLocale;
-  }
-
-  // Default to English
-  return "en";
-}
-
-// Main export with IntlProvider wrapper
 export default function OnboardingPage() {
-  const [locale, setLocale] = useState<SupportedLocale>("en");
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    setLocale(getDefaultLocale());
-  }, []);
-
-  // Determine direction based on locale
-  const direction = rtlLocales.includes(locale) ? "rtl" : "ltr";
-
-  // Set HTML direction attribute
-  useEffect(() => {
-    if (isClient) {
-      document.documentElement.dir = direction;
-      document.documentElement.lang = locale;
-    }
-  }, [locale, direction, isClient]);
-
-  // Handle locale change
-  const handleLocaleChange = (newLocale: SupportedLocale) => {
-    setLocale(newLocale);
-  };
-
-  return (
-    <IntlProvider
-      locale={locale}
-      messages={isClient ? messages[locale] : messages.en}
-    >
-      <OnboardingPageContent
-        locale={locale}
-        direction={direction}
-        onLocaleChange={handleLocaleChange}
-      />
-    </IntlProvider>
-  );
-}
-
-// Actual component content, wrapped with IntlProvider above
-function OnboardingPageContent({
-  locale,
-  direction,
-  onLocaleChange,
-}: {
-  locale: SupportedLocale;
-  direction: "rtl" | "ltr";
-  onLocaleChange: (locale: SupportedLocale) => void;
-}) {
   const intl = useIntl();
   const router = useRouter();
+  const { locale, direction } = useAppIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -113,7 +31,7 @@ function OnboardingPageContent({
   };
 
   return (
-    <OnboardingLayout direction={direction}>
+    <OnboardingLayout>
       <div className="min-h-screen flex flex-col md:flex-row">
         {/* Image side (left in LTR, right in RTL) */}
         <div
@@ -140,10 +58,7 @@ function OnboardingPageContent({
             <div
               className={cn("flex", isRtl ? "justify-start" : "justify-end")}
             >
-              <LanguageSwitcher
-                currentLocale={locale}
-                onLocaleChange={onLocaleChange}
-              />
+              <LanguageSwitcher />
             </div>
 
             {/* Logo + Welcome Text */}

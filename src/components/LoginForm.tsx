@@ -2,29 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
+import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  LanguageSwitcher,
-  SupportedLocale,
-} from "@/components/LanguageSwitcher";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useRouter } from "next/navigation";
 
-interface LoginFormProps {
-  direction?: "rtl" | "ltr";
-  locale: SupportedLocale;
-  onLocaleChange: (locale: SupportedLocale) => void;
-}
-
-export default function LoginForm({
-  direction = "ltr",
-  locale,
-  onLocaleChange,
-}: LoginFormProps) {
+export default function LoginForm() {
   const intl = useIntl();
   const router = useRouter();
+  const { direction } = useAppIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -58,10 +47,7 @@ export default function LoginForm({
     <div className="w-full max-w-md mx-auto">
       {/* Language Dropdown - top right */}
       <div className={cn("flex justify-end mb-6")}>
-        <LanguageSwitcher
-          currentLocale={locale}
-          onLocaleChange={onLocaleChange}
-        />
+        <LanguageSwitcher />
       </div>
 
       {/* Welcome Text */}

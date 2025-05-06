@@ -55,7 +55,6 @@ export function AppSidebar({
   translations = {},
 }: AppSidebarProps) {
   const { toggleSidebar, state } = useSidebar();
-  const isRtl = direction === "rtl";
 
   // Client-side rendering state
   const [isClient, setIsClient] = useState(false);
@@ -63,6 +62,16 @@ export function AppSidebar({
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Helper to apply styling based on locale
+  const getTextAlignment = (extraClasses = "") =>
+    cn(extraClasses, locale === "ur" ? "text-right font-urdu" : "text-left");
+
+  // Helper to determine if we should use RTL layout
+  const shouldUseRtl = locale === "ur";
+
+  // Helper to get icon margin based on locale
+  const getIconMargin = shouldUseRtl ? "ml-2" : "mr-2";
 
   // Default fallback translations
   const {
@@ -88,15 +97,21 @@ export function AppSidebar({
     <Sidebar
       collapsible="icon"
       className={cn(
-        "h-screen border-r",
-        isRtl ? "right-0 border-l" : "left-0 border-r"
+        "h-screen",
+        shouldUseRtl ? "border-l right-0" : "border-r left-0"
       )}
+      dir={shouldUseRtl ? "rtl" : "ltr"}
     >
-      <SidebarHeader className="p-4 flex items-center justify-between">
+      <SidebarHeader
+        className={cn(
+          "p-4 flex items-center",
+          shouldUseRtl ? "justify-between" : "justify-between"
+        )}
+      >
         <div
           className={cn(
             "text-xl font-bold transition-opacity duration-200 group-data-[state=collapsed]/sidebar:opacity-0",
-            isRtl ? "font-urdu text-right" : ""
+            getTextAlignment()
           )}
         >
           {appTitle}
@@ -105,11 +120,11 @@ export function AppSidebar({
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className={isRtl ? "mr-auto" : "ml-auto"}
+          className={shouldUseRtl ? "mr-auto" : "ml-auto"}
         >
           {state === "collapsed" ? (
             <Menu size={18} />
-          ) : isRtl ? (
+          ) : shouldUseRtl ? (
             <ChevronRight size={18} />
           ) : (
             <ChevronLeft size={18} />
@@ -118,41 +133,41 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className={isRtl ? "text-right font-urdu" : ""}>
+          <SidebarGroupLabel className={getTextAlignment()}>
             {sidebarNavigation}
           </SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={homeLabel}
-                className={isRtl ? "flex-row-reverse text-right" : ""}
+                className={shouldUseRtl ? "flex-row-reverse" : ""}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    isRtl ? "flex-row-reverse" : ""
+                    "flex w-full items-center",
+                    shouldUseRtl ? "justify-end" : ""
                   )}
                 >
-                  <Home className={cn("h-5 w-5", isRtl ? "ml-2" : "mr-2")} />
-                  <span className={isRtl ? "font-urdu" : ""}>{homeLabel}</span>
+                  <Home className={cn("h-5 w-5", getIconMargin)} />
+                  <span className={getTextAlignment("w-full")}>
+                    {homeLabel}
+                  </span>
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={dashboardLabel}
-                className={isRtl ? "flex-row-reverse text-right" : ""}
+                className={shouldUseRtl ? "flex-row-reverse" : ""}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    isRtl ? "flex-row-reverse" : ""
+                    "flex w-full items-center",
+                    shouldUseRtl ? " justify-end" : ""
                   )}
                 >
-                  <LayoutDashboard
-                    className={cn("h-5 w-5", isRtl ? "ml-2" : "mr-2")}
-                  />
-                  <span className={isRtl ? "font-urdu" : ""}>
+                  <LayoutDashboard className={cn("h-5 w-5", getIconMargin)} />
+                  <span className={getTextAlignment("w-full")}>
                     {dashboardLabel}
                   </span>
                 </div>
@@ -161,18 +176,16 @@ export function AppSidebar({
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={productsLabel}
-                className={isRtl ? "flex-row-reverse text-right" : ""}
+                className={shouldUseRtl ? "flex-row-reverse" : ""}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    isRtl ? "flex-row-reverse" : ""
+                    "flex w-full items-center",
+                    shouldUseRtl ? " justify-end" : ""
                   )}
                 >
-                  <ShoppingCart
-                    className={cn("h-5 w-5", isRtl ? "ml-2" : "mr-2")}
-                  />
-                  <span className={isRtl ? "font-urdu" : ""}>
+                  <ShoppingCart className={cn("h-5 w-5", getIconMargin)} />
+                  <span className={getTextAlignment("w-full")}>
                     {productsLabel}
                   </span>
                 </div>
@@ -181,16 +194,18 @@ export function AppSidebar({
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={usersLabel}
-                className={isRtl ? "flex-row-reverse text-right" : ""}
+                className={shouldUseRtl ? "flex-row-reverse" : ""}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    isRtl ? "flex-row-reverse" : ""
+                    "flex w-full items-center",
+                    shouldUseRtl ? " justify-end" : ""
                   )}
                 >
-                  <Users className={cn("h-5 w-5", isRtl ? "ml-2" : "mr-2")} />
-                  <span className={isRtl ? "font-urdu" : ""}>{usersLabel}</span>
+                  <Users className={cn("h-5 w-5", getIconMargin)} />
+                  <span className={getTextAlignment("w-full")}>
+                    {usersLabel}
+                  </span>
                 </div>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -198,25 +213,23 @@ export function AppSidebar({
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className={isRtl ? "text-right font-urdu" : ""}>
+          <SidebarGroupLabel className={getTextAlignment()}>
             {systemLabel}
           </SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={settingsLabel}
-                className={isRtl ? "flex-row-reverse text-right" : ""}
+                className={shouldUseRtl ? "flex-row-reverse" : ""}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    isRtl ? "flex-row-reverse" : ""
+                    "flex w-full items-center",
+                    shouldUseRtl ? " justify-end" : ""
                   )}
                 >
-                  <Settings
-                    className={cn("h-5 w-5", isRtl ? "ml-2" : "mr-2")}
-                  />
-                  <span className={isRtl ? "font-urdu" : ""}>
+                  <Settings className={cn("h-5 w-5", getIconMargin)} />
+                  <span className={getTextAlignment("w-full")}>
                     {settingsLabel}
                   </span>
                 </div>
@@ -230,27 +243,49 @@ export function AppSidebar({
 
         {/* Language Switcher Component */}
         {onLocaleChange && (
-          <div className={cn("pt-2", isRtl ? "text-right" : "text-left")}>
-            <div className="mb-2 text-xs text-muted-foreground">
-              {isRtl ? "زبان کا انتخاب کریں" : "Choose Language"}
+          <div
+            className={cn(
+              "pt-2",
+              shouldUseRtl ? "text-right" : "text-left",
+              shouldUseRtl && "flex flex-col items-end"
+            )}
+          >
+            <div
+              className={cn(
+                "w-full mb-2 text-xs text-muted-foreground",
+                shouldUseRtl ? "text-left" : "text-right",
+                getTextAlignment()
+              )}
+            >
+              {locale === "ur" ? "زبان کا انتخاب کریں" : "Choose Language"}
             </div>
             {isClient && (
               <LanguageSwitcher
                 currentLocale={locale}
-                onLocaleChange={onLocaleChange}
+                onLocaleChange={(newLocale) => {
+                  if (onLocaleChange) {
+                    // First, update the document direction
+                    const newDirection = newLocale === "ur" ? "rtl" : "ltr";
+                    document.documentElement.dir = newDirection;
+                    document.documentElement.lang = newLocale;
+
+                    // Then call the parent's onLocaleChange
+                    onLocaleChange(newLocale);
+                  }
+                }}
               />
             )}
           </div>
         )}
 
-        <div
+        {/* <div
           className={cn(
             "text-xs text-gray-500 transition-opacity duration-200 group-data-[state=collapsed]/sidebar:opacity-0 pt-2",
-            isRtl ? "text-right font-urdu" : ""
+            shouldUseRtl ? "text-right font-urdu" : ""
           )}
         >
           {versionLabel}
-        </div>
+        </div> */}
       </SidebarFooter>
     </Sidebar>
   );

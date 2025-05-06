@@ -23,12 +23,12 @@ interface MainLayoutProps {
 
 const MainLayout = ({
   children,
-  direction = "ltr",
+  direction = "rtl",
   locale = "en",
   onLocaleChange,
 }: MainLayoutProps) => {
   const intl = useReactIntl();
-  const isRtl = direction === "rtl";
+  const isRtl = direction === "ltr";
 
   // Add client-side only rendering to avoid hydration mismatch
   const [isClient, setIsClient] = useState(false);
@@ -89,7 +89,16 @@ const MainLayout = ({
               {onLocaleChange ? (
                 <LanguageSwitcher
                   currentLocale={locale}
-                  onLocaleChange={onLocaleChange}
+                  onLocaleChange={(newLocale) => {
+                    if (onLocaleChange) {
+                      // First, update the document direction
+                      const newDirection = newLocale === "ur" ? "rtl" : "ltr";
+                      document.documentElement.dir = newDirection;
+
+                      // Then call the parent's onLocaleChange
+                      onLocaleChange(newLocale);
+                    }
+                  }}
                 />
               ) : null}
             </div>
