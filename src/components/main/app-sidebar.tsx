@@ -31,7 +31,8 @@ import {
   SupportedLocale,
 } from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
-
+import { CommonIcon } from "../../common/icons";
+import { CommonIconNames, IconColors } from "../../common/icons/types";
 interface AppSidebarProps {
   direction?: "rtl" | "ltr";
   locale?: SupportedLocale;
@@ -73,6 +74,7 @@ export function AppSidebar({
 
   // Helper to get icon margin based on locale
   const getIconMargin = shouldUseRtl ? "ml-2" : "mr-2";
+  const ICON_SIZE = 22;
 
   // Default fallback translations
   const {
@@ -150,7 +152,14 @@ export function AppSidebar({
                     shouldUseRtl ? "justify-end" : ""
                   )}
                 >
-                  <Home className={cn("h-5 w-5", getIconMargin)} />
+                  <CommonIcon
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    name={CommonIconNames.HOME_ICON}
+                    fill={IconColors.GRAY_COLOR_ICON}
+                    className="w-4 h-4 flex items-center justify-center"
+                  />
+
                   <span className={getTextAlignment("w-full")}>
                     {homeLabel}
                   </span>
