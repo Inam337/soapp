@@ -74,7 +74,13 @@ export function AppSidebar({
 
   // Helper to get icon margin based on locale
   const getIconMargin = shouldUseRtl ? "ml-2" : "mr-2";
-  const ICON_SIZE = 22;
+  const ICON_SIZE = 16;
+
+  // Text visibility class based on sidebar state
+  const textVisibilityClass = cn(
+    "transition-opacity duration-200",
+    state === "collapsed" ? "opacity-0 hidden" : "opacity-100"
+  );
 
   // Default fallback translations
   const {
@@ -160,7 +166,12 @@ export function AppSidebar({
                     className="w-4 h-4 flex items-center justify-center"
                   />
 
-                  <span className={getTextAlignment("w-full")}>
+                  <span
+                    className={cn(
+                      getTextAlignment("w-full"),
+                      textVisibilityClass
+                    )}
+                  >
                     {homeLabel}
                   </span>
                 </div>
@@ -178,7 +189,12 @@ export function AppSidebar({
                   )}
                 >
                   <LayoutDashboard className={cn("h-5 w-5", getIconMargin)} />
-                  <span className={getTextAlignment("w-full")}>
+                  <span
+                    className={cn(
+                      getTextAlignment("w-full"),
+                      textVisibilityClass
+                    )}
+                  >
                     {dashboardLabel}
                   </span>
                 </div>
@@ -196,7 +212,12 @@ export function AppSidebar({
                   )}
                 >
                   <ShoppingCart className={cn("h-5 w-5", getIconMargin)} />
-                  <span className={getTextAlignment("w-full")}>
+                  <span
+                    className={cn(
+                      getTextAlignment("w-full"),
+                      textVisibilityClass
+                    )}
+                  >
                     {productsLabel}
                   </span>
                 </div>
@@ -214,7 +235,12 @@ export function AppSidebar({
                   )}
                 >
                   <Users className={cn("h-5 w-5", getIconMargin)} />
-                  <span className={getTextAlignment("w-full")}>
+                  <span
+                    className={cn(
+                      getTextAlignment("w-full"),
+                      textVisibilityClass
+                    )}
+                  >
                     {usersLabel}
                   </span>
                 </div>
@@ -240,7 +266,12 @@ export function AppSidebar({
                   )}
                 >
                   <Settings className={cn("h-5 w-5", getIconMargin)} />
-                  <span className={getTextAlignment("w-full")}>
+                  <span
+                    className={cn(
+                      getTextAlignment("w-full"),
+                      textVisibilityClass
+                    )}
+                  >
                     {settingsLabel}
                   </span>
                 </div>
@@ -258,7 +289,8 @@ export function AppSidebar({
             className={cn(
               "pt-2",
               shouldUseRtl ? "text-right" : "text-left",
-              shouldUseRtl && "flex flex-col items-end"
+              shouldUseRtl && "flex flex-col items-end",
+              textVisibilityClass
             )}
           >
             <div
