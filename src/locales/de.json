@@ -1,0 +1,27 @@
+{
+  "app.title": "Meine App",
+  "app.version": "Version 1.0.0",
+  "app.welcome": "Willkommen in unserer mehrsprachigen App!",
+  "app.description": "Dies ist eine Demo einer mehrsprachigen Next.js-Anwendung mit shadcn/ui-Komponenten.",
+  "app.tryChangingLanguage": "Versuchen Sie, die Sprache über das Dropdown-Menü in der Kopfzeile zu ändern.",
+  "app.content": "Dieser Inhalt ist mit react-intl internationalisiert. Sie können zwischen Englisch, Spanisch, Französisch und Deutsch wechseln.",
+  "app.features.title": "Funktionen",
+  "app.features.i18n": "Internationalisierung mit react-intl",
+  "app.features.sidebar": "Interaktive Seitenleistennavigation",
+  "app.features.theme": "Schöne UI-Komponenten",
+  "app.features.responsive": "Vollständig responsives Design",
+
+  "sidebar.navigation": "Navigation",
+  "sidebar.home": "Startseite",
+  "sidebar.dashboard": "Dashboard",
+  "sidebar.products": "Produkte",
+  "sidebar.users": "Benutzer",
+  "sidebar.system": "System",
+  "sidebar.settings": "Einstellungen",
+
+  "user.account": "Konto",
+  "user.billing": "Abrechnung",
+  "user.notifications": "Benachrichtigungen",
+  "user.logout": "Abmelden",
+  "user.upgrade": "Auf Pro upgraden"
+}
