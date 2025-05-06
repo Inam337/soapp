@@ -53,7 +53,7 @@ interface FormValues {
 
 export default function RegisterForm() {
   const intl = useReactIntl();
-  const { locale, direction, setLocale } = useIntl();
+  const { locale, direction } = useIntl();
   const isRtl = direction === "rtl";
   const [date, setDate] = useState<Date | undefined>();
   const [isClient, setIsClient] = useState(false);
@@ -61,10 +61,6 @@ export default function RegisterForm() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  const handleLocaleChange = (newLocale: SupportedLocale) => {
-    setLocale(newLocale);
-  };
 
   const t = (id: string, defaultMessage: string = "") =>
     intl.formatMessage({ id, defaultMessage });
@@ -228,10 +224,7 @@ export default function RegisterForm() {
         {/* Language Switcher */}
         {isClient && (
           <div className="p-2 bg-gray-100 rounded-lg">
-            <LanguageSwitcher
-              currentLocale={locale as SupportedLocale}
-              onLocaleChange={handleLocaleChange}
-            />
+            <LanguageSwitcher />
           </div>
         )}
       </div>

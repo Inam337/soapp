@@ -80,7 +80,7 @@ const MainLayout = ({
                 isRtl && "flex-row-reverse"
               )}
             >
-              <SidebarTrigger className={isRtl ? "mr-2" : "-ml-1"} />
+              {/* <SidebarTrigger className={isRtl ? "mr-2" : "-ml-1"} /> */}
               <span className={cn("font-semibold", isRtl ? "font-urdu" : "")}>
                 {t("sidebar.dashboard")}
               </span>

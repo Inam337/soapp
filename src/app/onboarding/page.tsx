@@ -3,18 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, ChevronLeft, Globe, User, Users } from "lucide-react";
-import { useIntl } from "react-intl";
+import { useIntl as useReactIntl } from "react-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
+import { useIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import OnboardingLayout from "@/components/main/LandingLayout";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function OnboardingPage() {
-  const intl = useIntl();
+  const intl = useReactIntl();
   const router = useRouter();
-  const { locale, direction } = useAppIntl();
+  const { locale, direction } = useIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -58,7 +58,7 @@ export default function OnboardingPage() {
             <div
               className={cn("flex", isRtl ? "justify-start" : "justify-end")}
             >
-              <LanguageSwitcher />
+              {isClient && <LanguageSwitcher />}
             </div>
 
             {/* Logo + Welcome Text */}

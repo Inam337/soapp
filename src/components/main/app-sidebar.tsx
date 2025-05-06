@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
@@ -92,7 +93,7 @@ export function AppSidebar({
     email: "john.doe@example.com",
     avatar: "https://github.com/shadcn.png",
   };
-
+  const isRtl = direction === "ltr";
   return (
     <Sidebar
       collapsible="icon"
@@ -108,6 +109,7 @@ export function AppSidebar({
           shouldUseRtl ? "justify-between" : "justify-between"
         )}
       >
+        <SidebarTrigger className={isRtl ? "mr-2" : "-ml-1"} />
         <div
           className={cn(
             "text-xl font-bold transition-opacity duration-200 group-data-[state=collapsed]/sidebar:opacity-0",
