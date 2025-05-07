@@ -56,6 +56,7 @@ interface AppSidebarProps {
     dataLabel?: string;
     notificationsLabel?: string;
     feedbacksLabel?: string;
+    settingLabel?: string;
   };
 }
 
@@ -102,6 +103,7 @@ export function AppSidebar({
     dataLabel = "Data Management",
     notificationsLabel = "Notifications",
     feedbacksLabel = "Feedbacks",
+    settingLabel = "Settings",
     versionLabel = "Version 1.0",
   } = translations;
 
@@ -377,11 +379,48 @@ export function AppSidebar({
       <SidebarFooter className="flex flex-col gap-2 ">
         <NavUser user={user} />
 
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip={settingLabel}
+                  className={shouldUseRtl ? "flex-row-reverse" : ""}
+                >
+                  <div
+                    className={cn(
+                      "flex w-full items-center",
+                      shouldUseRtl ? "justify-end" : ""
+                    )}
+                  >
+                    <CommonIcon
+                      width={ICON_SIZE}
+                      height={ICON_SIZE}
+                      name={CommonIconNames.COG_ICON}
+                      fill={IconColors.WHITE_COLOR_ICON}
+                      className="w-4 h-4 flex items-center justify-center mr-2"
+                    />
+
+                    <span
+                      className={cn(
+                        getTextAlignment("w-full"),
+                        textVisibilityClass
+                      )}
+                    >
+                      {settingLabel}
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
+
         {/* Language Switcher Component */}
         {onLocaleChange && (
           <div
             className={cn(
-              "pt-2",
+              "mb-4",
               shouldUseRtl ? "text-right" : "text-left",
               shouldUseRtl && "flex flex-col items-end",
               textVisibilityClass
