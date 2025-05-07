@@ -188,7 +188,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {insightsLabel}
@@ -217,7 +218,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {complaintsLabel}
@@ -246,7 +248,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {usersLabel}
@@ -275,7 +278,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {reportsLabel}
@@ -305,7 +309,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {dataLabel}
@@ -335,7 +340,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {notificationsLabel}
@@ -365,7 +371,8 @@ export function AppSidebar({
                   <span
                     className={cn(
                       getTextAlignment("w-full"),
-                      textVisibilityClass
+                      textVisibilityClass,
+                      shouldUseRtl ? "mr-2" : ""
                     )}
                   >
                     {feedbacksLabel}
@@ -404,7 +411,8 @@ export function AppSidebar({
                     <span
                       className={cn(
                         getTextAlignment("w-full"),
-                        textVisibilityClass
+                        textVisibilityClass,
+                        shouldUseRtl ? "mr-2" : ""
                       )}
                     >
                       {settingLabel}
@@ -420,7 +428,7 @@ export function AppSidebar({
         {onLocaleChange && (
           <div
             className={cn(
-              "mb-4",
+              "pt-2 mb-4",
               shouldUseRtl ? "text-right" : "text-left",
               shouldUseRtl && "flex flex-col items-end",
               textVisibilityClass
