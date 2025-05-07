@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useIntl } from "@/providers/react-intl-provider";
 
 // Define supported locales
 export const supportedLocales = ["en", "es", "fr", "de", "ur"] as const;
@@ -26,37 +25,22 @@ const languages = [
 ];
 
 interface LanguageSwitcherProps {
-  currentLocale?: SupportedLocale;
-  onLocaleChange?: (locale: SupportedLocale) => void;
+  currentLocale: SupportedLocale;
+  onLocaleChange: (locale: SupportedLocale) => void;
 }
 
 export function LanguageSwitcher({
-  currentLocale,
+  currentLocale = "en",
   onLocaleChange,
-}: LanguageSwitcherProps = {}) {
-  const { locale, setLocale } = useIntl();
-
-  // Use provided locale or fall back to the one from context
-  const activeLocale = currentLocale || (locale as SupportedLocale);
-
+}: LanguageSwitcherProps) {
   const changeLanguage = (newLocale: SupportedLocale) => {
-    // If custom handler provided, use it
-    if (onLocaleChange) {
-      onLocaleChange(newLocale);
-    } else {
-      // Otherwise use the context's setLocale
-      setLocale(newLocale);
-    }
-
-    // Always set the cookie
+    onLocaleChange(newLocale);
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
   };
 
   // Find current language data
   const currentLanguage =
-    languages.find((lang) => lang.code === activeLocale) || languages[0];
-
-  const isRtl = currentLanguage.rtl;
+    languages.find((lang) => lang.code === currentLocale) || languages[0];
 
   return (
     <DropdownMenu>
@@ -66,17 +50,11 @@ export function LanguageSwitcher({
           className="flex w-full items-center justify-between"
           size="sm"
         >
-          <div className={cn("flex items-center", isRtl && "flex-row-reverse")}>
-            <Languages className={cn("h-4 w-4", isRtl ? "ml-2" : "mr-2")} />
-            <span
-              className={cn("flex items-center", isRtl && "flex-row-reverse")}
-            >
-              <span className={isRtl ? "ml-1" : "mr-1"}>
-                {currentLanguage.flag}
-              </span>
-              <span className={isRtl ? "font-urdu" : ""}>
-                {currentLanguage.name}
-              </span>
+          <div className="flex items-center">
+            <Languages className="mr-2 h-4 w-4" />
+            <span className="flex items-center">
+              <span className="mr-1">{currentLanguage.flag}</span>
+              <span>{currentLanguage.name}</span>
             </span>
           </div>
         </Button>
@@ -105,7 +83,7 @@ export function LanguageSwitcher({
                   {language.name}
                 </span>
               </span>
-              {language.code === activeLocale && <Check className="h-4 w-4" />}
+              {language.code === currentLocale && <Check className="h-4 w-4" />}
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

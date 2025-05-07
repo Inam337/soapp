@@ -7,7 +7,7 @@ import OnboardingLayout from "@/components/main/LandingLayout";
 import RegisterForm from "@/components/RegisterForm";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import LoginBanner from "../../assets/logo/Banner.png";
 export default function RegisterPage() {
   const intl = useReactIntl();
   const { locale, direction } = useIntl();
@@ -29,22 +29,15 @@ export default function RegisterPage() {
         {/* Left Image - will be on right in RTL */}
         <div
           className={cn(
-            "relative w-full md:w-1/2 bg-green-800 h-64 md:h-auto",
+            "relative w-full md:w-1/2 h-64 md:h-auto",
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-green-800 to-green-600 opacity-80"></div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-white py-10 px-6">
-            <h1 className="text-4xl font-bold mb-6 text-center">
-              {t("register.welcomeHeading", "SINDH OMBUDSMAN")}
-            </h1>
-            <p className="text-xl mb-8 text-center max-w-md">
-              {t(
-                "register.welcomeText",
-                "Register to access the complaint management system"
-              )}
-            </p>
-          </div>
+          <img
+            src={LoginBanner.src}
+            alt="Logo"
+            className="w-full h-full object-cover md:h-screen"
+          />
         </div>
 
         {/* Right Content - will be on left in RTL */}

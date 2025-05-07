@@ -4,17 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, ChevronLeft, Globe, User, Users } from "lucide-react";
 import { useIntl as useReactIntl } from "react-intl";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import {
+  LanguageSwitcher,
+  SupportedLocale,
+} from "@/components/LanguageSwitcher";
 import { useIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import OnboardingLayout from "@/components/main/LandingLayout";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LoginBanner from "../../assets/logo/Banner.png";
 
 export default function OnboardingPage() {
   const intl = useReactIntl();
   const router = useRouter();
-  const { locale, direction } = useIntl();
+  const { locale, direction, setLocale } = useIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -30,6 +34,11 @@ export default function OnboardingPage() {
     router.push("/dashboard");
   };
 
+  // Handle language change
+  const handleLocaleChange = (newLocale: SupportedLocale) => {
+    setLocale(newLocale);
+  };
+
   return (
     <OnboardingLayout>
       <div className="min-h-screen flex flex-col md:flex-row">
@@ -40,12 +49,12 @@ export default function OnboardingPage() {
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-green-800 to-green-600 opacity-80"></div>
-          <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">
-            {t("onboarding.title")}
-          </div>
+          <img
+            src={LoginBanner.src}
+            alt="Logo"
+            className="w-full h-full object-cover md:h-screen"
+          />
         </div>
-
         {/* Content side (right in LTR, left in RTL) */}
         <div
           className={cn(
@@ -58,7 +67,12 @@ export default function OnboardingPage() {
             <div
               className={cn("flex", isRtl ? "justify-start" : "justify-end")}
             >
-              {isClient && <LanguageSwitcher />}
+              {isClient && (
+                <LanguageSwitcher
+                  currentLocale={locale}
+                  onLocaleChange={handleLocaleChange}
+                />
+              )}
             </div>
 
             {/* Logo + Welcome Text */}
@@ -75,7 +89,7 @@ export default function OnboardingPage() {
                 className="cursor-pointer hover:shadow-lg transition"
                 onClick={handleCardClick}
               >
-                <CardContent className="flex items-center justify-between p-4">
+                <CardContent className="flex items-center justify-between">
                   {/* Content with icon and text */}
                   <div
                     className={cn(
@@ -108,7 +122,7 @@ export default function OnboardingPage() {
                 className="cursor-pointer hover:shadow-lg transition"
                 onClick={handleCardClick}
               >
-                <CardContent className="flex items-center justify-between p-4">
+                <CardContent className="flex items-center justify-between">
                   {/* Content with icon and text */}
                   <div
                     className={cn(
@@ -143,7 +157,7 @@ export default function OnboardingPage() {
                 className="cursor-pointer hover:shadow-lg transition"
                 onClick={handleCardClick}
               >
-                <CardContent className="flex items-center justify-between p-4">
+                <CardContent className="flex items-center justify-between">
                   {/* Content with icon and text */}
                   <div
                     className={cn(

@@ -7,7 +7,7 @@ import OnboardingLayout from "@/components/main/LandingLayout";
 import LoginForm from "@/components/LoginForm";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import LoginBanner from "../../assets/logo/Banner.png";
 export default function LoginPage() {
   const intl = useIntl();
   const { direction } = useAppIntl();
@@ -33,10 +33,11 @@ export default function LoginPage() {
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-green-800 to-green-600 opacity-80"></div>
-          <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">
-            {t("onboarding.title", "SINDH OMBUDSMAN")}
-          </div>
+          <img
+            src={LoginBanner.src}
+            alt="Logo"
+            className="w-full h-full object-cover md:h-screen"
+          />
         </div>
 
         {/* Right Content - will be on left in RTL */}
