@@ -47,6 +47,14 @@ export const routes: Record<string, Route> = {
       fill: "#9CA3AF",
     },
   },
+  complaints: {
+    path: "/complaints",
+    label: "Complaints",
+    icon: {
+      name: CommonIconNames.MENU_ICON,
+      fill: "#9CA3AF",
+    },
+  },
 };
 
 // Helper function to get all routes
@@ -69,4 +77,21 @@ export const getRouteByPath = (path: string): Route | undefined => {
 // Helper function to check if a path is a valid route
 export const isValidRoute = (path: string): boolean => {
   return Object.values(routes).some((route) => route.path === path);
+};
+
+// Helper function to get localized path for a route
+export const getLocalizedPath = (routeKey: string, locale: string): string => {
+  const route = routes[routeKey];
+  if (!route) {
+    console.warn(`Route key "${routeKey}" not found`);
+    return "/";
+  }
+
+  // If locale is the default (en), don't add the prefix
+  if (locale === "en") {
+    return route.path;
+  }
+
+  // Otherwise, add the locale as a prefix
+  return `/${locale}${route.path}`;
 };

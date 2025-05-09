@@ -26,10 +26,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  LanguageSwitcher,
-  SupportedLocale,
-} from "@/components/LanguageSwitcher";
 
 interface FormValues {
   phoneNumber: string;
@@ -61,10 +57,6 @@ export default function RegisterForm() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  const handleLocaleChange = (newLocale: SupportedLocale) => {
-    setLocale(newLocale);
-  };
 
   const t = (id: string, defaultMessage: string = "") =>
     intl.formatMessage({ id, defaultMessage });
@@ -224,16 +216,6 @@ export default function RegisterForm() {
         <h1 className={cn("text-2xl font-bold", isRtl && "text-right")}>
           {t("register.title", "Citizen Registration")}
         </h1>
-
-        {/* Language Switcher */}
-        {isClient && (
-          <div className="p-2 bg-gray-100 rounded-lg">
-            <LanguageSwitcher
-              currentLocale={locale as SupportedLocale}
-              onLocaleChange={handleLocaleChange}
-            />
-          </div>
-        )}
       </div>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -824,3 +806,4 @@ export default function RegisterForm() {
     </div>
   );
 }
+ 

@@ -1,10 +1,6 @@
 "use client";
-import Image from "next/image";
-// app/page.tsx or pages/index.tsx
 
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
-import MainLayout from "@/components/main/MainLayout";
+// app/page.tsx or pages/index.tsx
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 

@@ -7,13 +7,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const intl = useIntl();
   const router = useRouter();
-  const { direction } = useAppIntl();
+  const { direction, locale } = useAppIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -45,11 +44,6 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      {/* Language Dropdown - top right */}
-      <div className={cn("flex justify-end mb-6")}>
-        <LanguageSwitcher />
-      </div>
-
       {/* Welcome Text */}
       <div className={cn("text-center mb-8", isRtl && "font-urdu")}>
         <p className="text-base">
@@ -84,6 +78,16 @@ export default function LoginForm() {
             <Label htmlFor="password" className={cn(isRtl && "font-urdu")}>
               {t("login.password", "Password")}
             </Label>
+          </div>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={isRtl ? "text-right font-urdu" : ""}
+            dir={direction}
+          />
+          <div className={cn("flex items-center justify-end")}>
             <Button
               variant="outline"
               className={cn("px-4 text-green-600", isRtl && "font-urdu")}
@@ -94,14 +98,6 @@ export default function LoginForm() {
               {t("login.forgotpassword", "Forgot Password")}
             </Button>
           </div>
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={isRtl ? "text-right font-urdu" : ""}
-            dir={direction}
-          />
         </div>
 
         <Button

@@ -47,6 +47,6 @@ export interface IconProps extends IconType {
 export const IconColors = {
   WHITE_COLOR_ICON: "#FFFFFF",
   GRAY_COLOR_ICON: "#9CA3AF",
-  PRIMARY_COLOR_ICON: "#3B82F6",
+  PRIMARY_COLOR_ICON: "#059669",
   HAM_BURGER_ARROW: "#FFFFFF",
 } as const;

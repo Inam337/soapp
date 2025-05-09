@@ -91,19 +91,25 @@ export function NavUser({
               size={isCollapsed ? "default" : "lg"}
               className={cn(
                 "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground w-full",
-                isRtl ? "flex-row-reverse text-right" : ""
+                isRtl ? "flex-row-reverse text-right" : "",
+                isCollapsed && "justify-center"
               )}
             >
               <Avatar
                 className={cn(
-                  "h-8 w-8 rounded-lg shrink-0",
-                  isRtl ? "ml-2" : "mr-2"
+                  "flex items-center justify-center rounded-lg",
+                  isRtl && !isCollapsed ? "ml-2 h-6 w-6" : "h-6 w-6",
+                  isCollapsed && "mx-auto"
                 )}
               >
-                <AvatarImage src={user.avatar} alt={displayName} />
+                <AvatarImage
+                  src={user.avatar}
+                  alt={displayName}
+                  className="h-6 w-6 rounded"
+                />
                 <AvatarFallback className="rounded-lg">
                   {isCollapsed ? (
-                    <User size={18} />
+                    <User size={12} />
                   ) : (
                     displayName.charAt(0) +
                     (displayName.split(" ")[1]?.charAt(0) || "")
@@ -113,7 +119,8 @@ export function NavUser({
               <div
                 className={cn(
                   "grid flex-1 text-sm leading-tight",
-                  isRtl ? "text-right" : "text-left"
+                  isRtl ? "text-right" : "text-left",
+                  isCollapsed && "hidden"
                 )}
               >
                 <span
@@ -127,7 +134,11 @@ export function NavUser({
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown
-                className={cn("size-4", isRtl ? "mr-auto" : "ml-auto")}
+                className={cn(
+                  "size-4",
+                  isRtl ? "mr-auto" : "ml-auto",
+                  isCollapsed && "hidden"
+                )}
               />
             </SidebarMenuButton>
           </DropdownMenuTrigger>

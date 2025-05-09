@@ -1,16 +1,19 @@
 "use client";
 
-import { useIntl } from "react-intl";
+import { useEffect, useState } from "react";
 import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
-import OnboardingLayout from "@/components/main/LandingLayout";
+import OnboardingLayout from "@/components/main/landing-layout";
 import LoginForm from "@/components/LoginForm";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import LoginBanner from "../../assets/logo/Banner.png";
+import {
+  LanguageSwitcher,
+  SupportedLocale,
+} from "@/components/LanguageSwitcher";
+
 export default function LoginPage() {
-  const intl = useIntl();
-  const { direction } = useAppIntl();
+  const { direction, locale, setLocale } = useAppIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -20,8 +23,11 @@ export default function LoginPage() {
     setIsClient(true);
   }, []);
 
-  const t = (id: string, defaultMessage: string = "") =>
-    intl.formatMessage({ id, defaultMessage });
+  const handleLocaleChange = (newLocale: SupportedLocale) => {
+    if (setLocale) {
+      setLocale(newLocale);
+    }
+  };
 
   return (
     <OnboardingLayout>
@@ -33,20 +39,32 @@ export default function LoginPage() {
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <img
-            src={LoginBanner.src}
-            alt="Logo"
-            className="w-full h-full object-cover md:h-screen"
+          <Image
+            src={LoginBanner}
+            alt="Login Banner"
+            className="object-cover"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
 
         {/* Right Content - will be on left in RTL */}
         <div
           className={cn(
-            "w-full md:w-1/2 flex items-center justify-center p-6",
+            "w-full md:w-1/2 flex items-center justify-center p-6 relative",
             isRtl ? "md:order-1" : "md:order-2"
           )}
         >
+          {/* Language Dropdown - top right */}
+          {isClient && (
+            <div className="absolute top-4 right-4">
+              <LanguageSwitcher
+                currentLocale={locale as SupportedLocale}
+                onLocaleChange={handleLocaleChange}
+              />
+            </div>
+          )}
           <LoginForm />
         </div>
       </div>

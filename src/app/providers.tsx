@@ -8,21 +8,15 @@ import { useState, useEffect } from "react";
 // Define default locale directly since middleware is gone
 const defaultLocale = "en";
 
-// Empty fallback messages to ensure we have valid initial state
-const EMPTY_MESSAGES: Record<string, string> = {};
-
 export function Providers({ children }: { children: React.ReactNode }) {
   // Define state for locale and messages
-  const [messages, setMessages] =
-    useState<Record<string, string>>(EMPTY_MESSAGES);
   const [isReady, setIsReady] = useState(false);
 
   // Load messages in useEffect without using Suspense
   useEffect(() => {
     // Use a simple dynamic import without cache
     import(`@/locales/${defaultLocale}.json`)
-      .then((module) => {
-        setMessages(module.default);
+      .then(() => {
         setIsReady(true);
       })
       .catch((error) => {
@@ -50,4 +44,3 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </Provider>
   );
 }
-//

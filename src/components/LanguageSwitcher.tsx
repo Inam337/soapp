@@ -47,7 +47,7 @@ export function LanguageSwitcher({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex w-full items-center justify-between"
+          className="flex w-full items-center justify-between border-2"
           size="sm"
         >
           <div className="flex items-center">

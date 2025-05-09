@@ -10,9 +10,10 @@ import {
 } from "@/components/LanguageSwitcher";
 import { useIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
-import OnboardingLayout from "@/components/main/LandingLayout";
+import OnboardingLayout from "@/components/main/landing-layout";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import LoginBanner from "../../assets/logo/Banner.png";
 
 export default function OnboardingPage() {
@@ -49,10 +50,13 @@ export default function OnboardingPage() {
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <img
-            src={LoginBanner.src}
-            alt="Logo"
-            className="w-full h-full object-cover md:h-screen"
+          <Image
+            src={LoginBanner}
+            alt="Onboarding Banner"
+            className="object-cover"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
         {/* Content side (right in LTR, left in RTL) */}
@@ -62,18 +66,19 @@ export default function OnboardingPage() {
             isRtl ? "md:order-1" : "md:order-2"
           )}
         >
+          {isClient && (
+            <div className={cn("absolute top-4 right-4")}>
+              <LanguageSwitcher
+                currentLocale={locale}
+                onLocaleChange={handleLocaleChange}
+              />
+            </div>
+          )}
           <div className="w-full max-w-md space-y-6">
             {/* Language Dropdown */}
             <div
               className={cn("flex", isRtl ? "justify-start" : "justify-end")}
-            >
-              {isClient && (
-                <LanguageSwitcher
-                  currentLocale={locale}
-                  onLocaleChange={handleLocaleChange}
-                />
-              )}
-            </div>
+            ></div>
 
             {/* Logo + Welcome Text */}
             <div className={cn("text-center space-y-2", isRtl && "font-urdu")}>

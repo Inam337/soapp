@@ -1,12 +1,12 @@
 "use client";
 
+import ComplaintsList from "@/components/complaints/complaints-list";
 import DashboardLayout from "@/components/main/sidebar-layout";
-import DashboardComponent from "@/components/dashboard/insights";
 
-export default function DashboardPage() {
+export default function ComplaintsPage() {
   return (
     <DashboardLayout>
-      <DashboardComponent />
+      <ComplaintsList />
     </DashboardLayout>
   );
 }

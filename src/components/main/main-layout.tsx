@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { AppSidebar } from "./app-sidebar";
 import {
   SidebarProvider,
@@ -13,6 +14,16 @@ import {
 } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -29,6 +40,7 @@ const MainLayout = ({
 }: MainLayoutProps) => {
   const intl = useReactIntl();
   const isRtl = direction === "ltr";
+  const pathname = usePathname();
 
   // Add client-side only rendering to avoid hydration mismatch
   const [isClient, setIsClient] = useState(false);
@@ -38,6 +50,58 @@ const MainLayout = ({
   }, []);
 
   const t = (id: string) => intl.formatMessage({ id });
+
+  // Check if we're on the dashboard page
+  const isDashboardPage = pathname === "/dashboard";
+
+  // Generate breadcrumb items based on current path
+  const generateBreadcrumbs = () => {
+    // Skip for dashboard
+    if (isDashboardPage) return null;
+
+    const pathSegments = pathname.split("/").filter(Boolean);
+
+    return (
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/dashboard">{t("sidebar.dashboard")}</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+
+          {pathSegments.map((segment, index) => {
+            const segmentPath = `/${pathSegments
+              .slice(0, index + 1)
+              .join("/")}`;
+            const isLast = index === pathSegments.length - 1;
+
+            // Translate segment name if available
+            const segmentTranslationKey = `sidebar.${segment.toLowerCase()}`;
+            const segmentName = intl.messages[segmentTranslationKey]
+              ? t(segmentTranslationKey)
+              : segment.charAt(0).toUpperCase() + segment.slice(1);
+
+            return isLast ? (
+              <BreadcrumbItem key={segment}>
+                <BreadcrumbPage>{segmentName}</BreadcrumbPage>
+              </BreadcrumbItem>
+            ) : (
+              <React.Fragment key={segment}>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={segmentPath}>{segmentName}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </React.Fragment>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    );
+  };
 
   // Prepare translations for sidebar
   const sidebarTranslations = {
@@ -50,6 +114,13 @@ const MainLayout = ({
     systemLabel: t("sidebar.system"),
     settingsLabel: t("sidebar.settings"),
     versionLabel: t("app.version"),
+    insightsLabel: t("sidebar.insights"),
+    complaintsLabel: t("sidebar.complaints"),
+    reportsLabel: t("sidebar.reports"),
+    dataLabel: t("sidebar.data"),
+    notificationsLabel: t("sidebar.notifications"),
+    feedbacksLabel: t("sidebar.feedbacks"),
+    settingLabel: t("sidebar.setting"),
   };
 
   return (
@@ -81,9 +152,13 @@ const MainLayout = ({
               )}
             >
               {/* <SidebarTrigger className={isRtl ? "mr-2" : "-ml-1"} /> */}
-              <span className={cn("font-semibold", isRtl ? "font-urdu" : "")}>
-                {t("sidebar.dashboard")}
-              </span>
+              {!isDashboardPage ? (
+                generateBreadcrumbs()
+              ) : (
+                <span className={cn("font-semibold", isRtl ? "font-urdu" : "")}>
+                  {t("sidebar.dashboard")}
+                </span>
+              )}
             </div>
             <div className="flex items-center gap-2">
               {onLocaleChange ? (

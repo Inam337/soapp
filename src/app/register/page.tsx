@@ -3,14 +3,19 @@
 import { useIntl as useReactIntl } from "react-intl";
 import { useIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
-import OnboardingLayout from "@/components/main/LandingLayout";
+import OnboardingLayout from "@/components/main/landing-layout";
 import RegisterForm from "@/components/RegisterForm";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import LoginBanner from "../../assets/logo/Banner.png";
+import {
+  LanguageSwitcher,
+  SupportedLocale,
+} from "@/components/LanguageSwitcher";
+
 export default function RegisterPage() {
   const intl = useReactIntl();
-  const { locale, direction } = useIntl();
+  const { locale, direction, setLocale } = useIntl();
   const isRtl = direction === "rtl";
 
   // Add client-side only rendering to avoid hydration mismatch
@@ -19,6 +24,12 @@ export default function RegisterPage() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleLocaleChange = (newLocale: SupportedLocale) => {
+    if (setLocale) {
+      setLocale(newLocale);
+    }
+  };
 
   const t = (id: string, defaultMessage: string = "") =>
     intl.formatMessage({ id, defaultMessage });
@@ -43,10 +54,18 @@ export default function RegisterPage() {
         {/* Right Content - will be on left in RTL */}
         <div
           className={cn(
-            "w-full md:w-1/2 flex items-center justify-center p-6 bg-white",
+            "w-full md:w-1/2 flex items-center justify-center p-6 bg-white relative",
             isRtl ? "md:order-1" : "md:order-2"
           )}
         >
+          {isClient && (
+            <div className="absolute top-4 right-4">
+              <LanguageSwitcher
+                currentLocale={locale as SupportedLocale}
+                onLocaleChange={handleLocaleChange}
+              />
+            </div>
+          )}
           <RegisterForm />
         </div>
       </div>

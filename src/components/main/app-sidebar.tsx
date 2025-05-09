@@ -150,7 +150,7 @@ export function AppSidebar({
             <img
               src={ProjectLogo.src}
               alt="Logo"
-              className="min-h-screen w-16 object-contain"
+              className="min-h-screen w-24 object-contain"
             />
           </div>
           <SidebarTrigger
@@ -383,9 +383,7 @@ export function AppSidebar({
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2 ">
-        <NavUser user={user} />
-
+      <SidebarFooter className="flex flex-col p-0">
         <SidebarContent>
           <SidebarGroup>
             <SidebarMenu>
@@ -412,7 +410,7 @@ export function AppSidebar({
                       className={cn(
                         getTextAlignment("w-full"),
                         textVisibilityClass,
-                        shouldUseRtl ? "mr-2" : ""
+                        shouldUseRtl ? "mr-2" : "ml-2"
                       )}
                     >
                       {settingLabel}
@@ -425,7 +423,7 @@ export function AppSidebar({
         </SidebarContent>
 
         {/* Language Switcher Component */}
-        {onLocaleChange && (
+        {/* {onLocaleChange && (
           <div
             className={cn(
               "pt-2 mb-4",
@@ -441,7 +439,7 @@ export function AppSidebar({
                 getTextAlignment()
               )}
             >
-              {/* {locale === "ur" ? "زبان کا انتخاب کریں" : "Choose Language"} */}
+              {/* {locale === "ur" ? "زبان کا انتخاب کریں" : "Choose Language"} *
             </div>
             {isClient && (
               <LanguageSwitcher
@@ -460,7 +458,7 @@ export function AppSidebar({
               />
             )}
           </div>
-        )}
+        )} */}
 
         {/* <div
           className={cn(
@@ -471,6 +469,9 @@ export function AppSidebar({
           {versionLabel}
         </div> */}
       </SidebarFooter>
+      <div className="p-2">
+        <NavUser user={user} />
+      </div>
     </Sidebar>
   );
 }
