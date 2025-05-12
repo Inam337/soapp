@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useIntl } from "react-intl";
 import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
@@ -8,21 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
+import LogoGreen from "../assets/logo/green_logo.png";
 export default function LoginForm() {
   const intl = useIntl();
   const router = useRouter();
-  const { direction, locale } = useAppIntl();
+  const { direction } = useAppIntl();
   const isRtl = direction === "rtl";
 
-  // Add client-side only rendering to avoid hydration mismatch
-  const [isClient, setIsClient] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const t = (id: string, defaultMessage: string) =>
     intl.formatMessage({ id }, { defaultMessage });
@@ -46,6 +41,15 @@ export default function LoginForm() {
     <div className="w-full max-w-md mx-auto">
       {/* Welcome Text */}
       <div className={cn("text-center mb-8", isRtl && "font-urdu")}>
+        <div className="relative mx-auto w-[270px] h-[96px] mb-4">
+          <Image
+            src={LogoGreen}
+            alt="Login Banner"
+            className="object-contain"
+            width={270}
+            height={96}
+          />
+        </div>
         <p className="text-base">
           {t(
             "login.welcome",
@@ -102,7 +106,7 @@ export default function LoginForm() {
 
         <Button
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
+          className="w-full bg-primary hover:bg-green-700 text-white py-2 rounded"
         >
           {t("login.submit", "Login")}
         </Button>

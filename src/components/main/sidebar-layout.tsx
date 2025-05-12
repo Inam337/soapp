@@ -1,11 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { IntlProvider, useIntl } from "react-intl";
+import { IntlProvider } from "react-intl";
 import MainLayout from "@/components/main/main-layout";
 import { SupportedLocale } from "@/components/LanguageSwitcher";
 import { getCookie } from "cookies-next";
 import { cn } from "@/lib/utils";
+
+// Import translation files using ES module imports
+import enMessages from "@/locales/en.json";
+import esMessages from "@/locales/es.json";
+import frMessages from "@/locales/fr.json";
+import deMessages from "@/locales/de.json";
+import urMessages from "@/locales/ur.json";
 
 // Define RTL locales
 const rtlLocales = ["ur"];
@@ -15,11 +22,11 @@ const supportedLocales = ["en", "es", "fr", "de", "ur"] as const;
 
 // Load all translation messages
 const messages: Record<string, Record<string, string>> = {
-  en: require("@/locales/en.json"),
-  es: require("@/locales/es.json"),
-  fr: require("@/locales/fr.json"),
-  de: require("@/locales/de.json"),
-  ur: require("@/locales/ur.json"),
+  en: enMessages,
+  es: esMessages,
+  fr: frMessages,
+  de: deMessages,
+  ur: urMessages,
 };
 
 // Standalone locale detection

@@ -1,6 +1,5 @@
 "use client";
 
-import { useIntl as useReactIntl } from "react-intl";
 import { useIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import OnboardingLayout from "@/components/main/landing-layout";
@@ -14,7 +13,6 @@ import {
 } from "@/components/LanguageSwitcher";
 
 export default function RegisterPage() {
-  const intl = useReactIntl();
   const { locale, direction, setLocale } = useIntl();
   const isRtl = direction === "rtl";
 
@@ -31,9 +29,6 @@ export default function RegisterPage() {
     }
   };
 
-  const t = (id: string, defaultMessage: string = "") =>
-    intl.formatMessage({ id, defaultMessage });
-
   return (
     <OnboardingLayout>
       <div className="min-h-screen flex flex-col md:flex-row">
@@ -44,10 +39,11 @@ export default function RegisterPage() {
             isRtl ? "md:order-2" : "md:order-1"
           )}
         >
-          <img
-            src={LoginBanner.src}
-            alt="Logo"
-            className="w-full h-full object-cover md:h-screen"
+          <Image
+            src={LoginBanner}
+            alt="Register Banner"
+            className="object-cover h-screen"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
 

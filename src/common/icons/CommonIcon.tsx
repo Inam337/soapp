@@ -2,7 +2,6 @@ import { CommonIconNames, IconType } from "./types";
 import { HomeIcon } from "./home.icon";
 import { MenuIcon } from "./menu.icon";
 import { ArrowChevronRightIcon } from "./arrow-chevron-right.icon";
-import { ArrowChevronLeftIcon } from "./arrow-chevron-left.icon";
 import { BarChartIcon } from "./bar-chart.icon";
 import { CalenderIcon } from "./calender.icon";
 import { CheckboxIcon } from "./checkbox.icon";

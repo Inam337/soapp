@@ -3,8 +3,6 @@ import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import authReducer from "./auth/auth.slice";
 import drawerReducer from "./slices/drawerSlice";
-import usersReducer from "./users/users.slice";
-import productsReducer from "./products/products.slice";
 import { authSaga } from "./auth/auth.saga";
 import rootSaga from "./sagas";
 
@@ -18,8 +16,6 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     drawer: drawerReducer,
-    users: usersReducer,
-    products: productsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

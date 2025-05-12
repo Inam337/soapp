@@ -39,7 +39,7 @@ const RegisterComplaint: React.FC = () => {
   const intl = useIntl();
   const [currentStep, setCurrentStep] = useState(1);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [isRtl, setIsRtl] = useState(document.dir === "rtl");
+  const [isRtl] = useState(document.dir === "rtl");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

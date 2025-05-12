@@ -6,7 +6,7 @@ export interface DrawerState {
   isOpen: boolean;
   title: string;
   contentType?: string;
-  contentProps?: Record<string, any>;
+  contentProps?: Record<string, unknown>;
   content?: ReactNode;
   size?: "sm" | "md" | "lg" | "xl" | "full";
   isOverlayClose?: boolean;

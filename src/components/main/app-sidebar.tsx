@@ -13,24 +13,10 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Home,
-  LayoutDashboard,
-  ShoppingCart,
-  Users,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { NavUser } from "./nav-user";
 import { cn } from "@/lib/utils";
-import {
-  LanguageSwitcher,
-  SupportedLocale,
-} from "@/components/LanguageSwitcher";
-import { useEffect, useState } from "react";
+import { SupportedLocale } from "@/components/LanguageSwitcher";
+import { memo } from "react";
 import { CommonIcon } from "../../common/icons";
 import {
   CommonIconNames,
@@ -38,7 +24,8 @@ import {
   IconType,
 } from "../../common/icons/types";
 import ProjectLogo from "../../assets/logo/white_logo.png";
-import { memo } from "react";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 interface AppSidebarProps {
   direction?: "rtl" | "ltr";
@@ -60,20 +47,23 @@ interface AppSidebarProps {
   };
 }
 
+// Define route structure
+interface SidebarRoute {
+  label: string;
+  url: string;
+  icon: CommonIconNames;
+  isImplemented?: boolean;
+}
+
 export function AppSidebar({
   direction = "ltr",
   locale = "en",
-  onLocaleChange,
+  onLocaleChange: _onLocaleChange,
   translations = {},
 }: AppSidebarProps) {
-  const { toggleSidebar, state } = useSidebar();
-
-  // Client-side rendering state
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const { state } = useSidebar();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Helper to apply styling based on locale
   const getTextAlignment = (extraClasses = "") =>
@@ -82,8 +72,6 @@ export function AppSidebar({
   // Helper to determine if we should use RTL layout
   const shouldUseRtl = locale === "ur";
 
-  // Helper to get icon margin based on locale
-  const getIconMargin = shouldUseRtl ? "ml-2" : "mr-2";
   const ICON_SIZE = 16;
 
   // Text visibility class based on sidebar state
@@ -94,7 +82,6 @@ export function AppSidebar({
 
   // Default fallback translations
   const {
-    appTitle = "Sindh Ombudsman",
     sidebarNavigation = "Navigation",
     insightsLabel = "Insights",
     complaintsLabel = "Complaints",
@@ -104,8 +91,77 @@ export function AppSidebar({
     notificationsLabel = "Notifications",
     feedbacksLabel = "Feedbacks",
     settingLabel = "Settings",
-    versionLabel = "Version 1.0",
   } = translations;
+
+  // Define all routes with their URLs and icons
+  const routes: SidebarRoute[] = [
+    {
+      label: insightsLabel,
+      url: "/dashboard",
+      icon: CommonIconNames.DASHBOARD_ICON,
+      isImplemented: true,
+    },
+    {
+      label: complaintsLabel,
+      url: "/complaints",
+      icon: CommonIconNames.FILE_ICON,
+      isImplemented: true,
+    },
+    {
+      label: usersLabel,
+      url: "/users",
+      icon: CommonIconNames.USER_ICON,
+      isImplemented: false,
+    },
+    {
+      label: reportsLabel,
+      url: "/reports",
+      icon: CommonIconNames.REPORT_ICON,
+      isImplemented: false,
+    },
+    {
+      label: dataLabel,
+      url: "/data",
+      icon: CommonIconNames.DATA_ICON,
+      isImplemented: false,
+    },
+    {
+      label: notificationsLabel,
+      url: "/notifications",
+      icon: CommonIconNames.NOTIFICATION_ICON,
+      isImplemented: false,
+    },
+    {
+      label: feedbacksLabel,
+      url: "/feedbacks",
+      icon: CommonIconNames.FEEDBACK_ICON,
+      isImplemented: false,
+    },
+  ];
+
+  // Define settings route separately since it appears in the footer
+  const settingsRoute: SidebarRoute = {
+    label: settingLabel,
+    url: "/settings",
+    icon: CommonIconNames.COG_ICON,
+    isImplemented: false,
+  };
+
+  // Handle navigation
+  const handleNavigation = (route: SidebarRoute) => {
+    if (route.isImplemented) {
+      router.push(route.url);
+    } else {
+      // If route is not implemented, just log or show a notification
+      console.log(`Route ${route.url} is not implemented yet`);
+      // You could also display a toast notification here
+    }
+  };
+
+  // Check if a route is active
+  const isRouteActive = (url: string) => {
+    return pathname === url;
+  };
 
   // Mock user data
   const user = {
@@ -113,7 +169,9 @@ export function AppSidebar({
     email: "john.doe@example.com",
     avatar: "https://github.com/shadcn.png",
   };
+
   const isRtl = direction === "ltr";
+
   return (
     <Sidebar
       collapsible="icon"
@@ -146,11 +204,12 @@ export function AppSidebar({
                 : "w-auto opacity-100"
             )}
           >
-            {/* {appTitle} */}
-            <img
+            <Image
               src={ProjectLogo.src}
               alt="Logo"
               className="min-h-screen w-24 object-contain"
+              width={96}
+              height={600}
             />
           </div>
           <SidebarTrigger
@@ -166,231 +225,13 @@ export function AppSidebar({
             {sidebarNavigation}
           </SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={insightsLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? "justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.DASHBOARD_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {insightsLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={complaintsLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.FILE_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {complaintsLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={usersLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.USER_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2 "
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {usersLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={reportsLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.REPORT_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {reportsLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={dataLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.DATA_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {dataLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={notificationsLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.NOTIFICATION_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {notificationsLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip={feedbacksLabel}
-                className={shouldUseRtl ? "flex-row-reverse" : ""}
-              >
-                <div
-                  className={cn(
-                    "flex w-full items-center",
-                    shouldUseRtl ? " justify-end" : ""
-                  )}
-                >
-                  <CommonIcon
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    name={CommonIconNames.FEEDBACK_ICON}
-                    fill={IconColors.WHITE_COLOR_ICON}
-                    className="w-4 h-4 flex items-center justify-center mr-2"
-                  />
-                  <span
-                    className={cn(
-                      getTextAlignment("w-full"),
-                      textVisibilityClass,
-                      shouldUseRtl ? "mr-2" : ""
-                    )}
-                  >
-                    {feedbacksLabel}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="flex flex-col p-0">
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarMenu>
-              <SidebarMenuItem>
+            {routes.map((route) => (
+              <SidebarMenuItem key={route.url}>
                 <SidebarMenuButton
-                  tooltip={settingLabel}
+                  tooltip={route.label}
                   className={shouldUseRtl ? "flex-row-reverse" : ""}
+                  onClick={() => handleNavigation(route)}
+                  data-active={isRouteActive(route.url)}
                 >
                   <div
                     className={cn(
@@ -401,7 +242,48 @@ export function AppSidebar({
                     <CommonIcon
                       width={ICON_SIZE}
                       height={ICON_SIZE}
-                      name={CommonIconNames.COG_ICON}
+                      name={route.icon}
+                      fill={IconColors.WHITE_COLOR_ICON}
+                      className="w-4 h-4 flex items-center justify-center mr-2"
+                    />
+
+                    <span
+                      className={cn(
+                        getTextAlignment("w-full"),
+                        textVisibilityClass,
+                        shouldUseRtl ? "mr-2" : ""
+                      )}
+                    >
+                      {route.label}
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="flex flex-col p-0">
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip={settingsRoute.label}
+                  className={shouldUseRtl ? "flex-row-reverse" : ""}
+                  onClick={() => handleNavigation(settingsRoute)}
+                  data-active={isRouteActive(settingsRoute.url)}
+                >
+                  <div
+                    className={cn(
+                      "flex w-full items-center",
+                      shouldUseRtl ? "justify-end" : ""
+                    )}
+                  >
+                    <CommonIcon
+                      width={ICON_SIZE}
+                      height={ICON_SIZE}
+                      name={settingsRoute.icon}
                       fill={IconColors.WHITE_COLOR_ICON}
                       className="w-4 h-4 flex items-center justify-center mr-2"
                     />
@@ -413,7 +295,7 @@ export function AppSidebar({
                         shouldUseRtl ? "mr-2" : "ml-2"
                       )}
                     >
-                      {settingLabel}
+                      {settingsRoute.label}
                     </span>
                   </div>
                 </SidebarMenuButton>
@@ -421,53 +303,6 @@ export function AppSidebar({
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
-
-        {/* Language Switcher Component */}
-        {/* {onLocaleChange && (
-          <div
-            className={cn(
-              "pt-2 mb-4",
-              shouldUseRtl ? "text-right" : "text-left",
-              shouldUseRtl && "flex flex-col items-end",
-              textVisibilityClass
-            )}
-          >
-            <div
-              className={cn(
-                "w-full mb-2 text-xs text-muted-foreground",
-                shouldUseRtl ? "text-left" : "text-right",
-                getTextAlignment()
-              )}
-            >
-              {/* {locale === "ur" ? "زبان کا انتخاب کریں" : "Choose Language"} *
-            </div>
-            {isClient && (
-              <LanguageSwitcher
-                currentLocale={locale}
-                onLocaleChange={(newLocale) => {
-                  if (onLocaleChange) {
-                    // First, update the document direction
-                    const newDirection = newLocale === "ur" ? "rtl" : "ltr";
-                    document.documentElement.dir = newDirection;
-                    document.documentElement.lang = newLocale;
-
-                    // Then call the parent's onLocaleChange
-                    onLocaleChange(newLocale);
-                  }
-                }}
-              />
-            )}
-          </div>
-        )} */}
-
-        {/* <div
-          className={cn(
-            "text-xs text-gray-500 transition-opacity duration-200 group-data-[state=collapsed]/sidebar:opacity-0 pt-2",
-            shouldUseRtl ? "text-right font-urdu" : ""
-          )}
-        >
-          {versionLabel}
-        </div> */}
       </SidebarFooter>
       <div className="p-2">
         <NavUser user={user} />

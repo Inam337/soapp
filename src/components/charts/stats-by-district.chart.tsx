@@ -1,25 +1,7 @@
 // Stats by District Chart
-import React, { FC, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement,
-  LineElement,
-} from "chart.js";
+import React, { FC } from "react";
+import { Line } from "react-chartjs-2";
+import "chart.js/auto";
 
 const DistrictStatsChart: FC = () => {
   const data = {
@@ -42,6 +24,12 @@ const DistrictStatsChart: FC = () => {
         borderColor: "rgb(16, 185, 129)",
         backgroundColor: "rgba(16, 185, 129, 0.5)",
         fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: "rgb(16, 185, 129)",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
       },
       {
         label: "New",
@@ -49,24 +37,62 @@ const DistrictStatsChart: FC = () => {
         borderColor: "rgb(234, 179, 8)",
         backgroundColor: "rgba(234, 179, 8, 0.5)",
         fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: "rgb(234, 179, 8)",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
       },
     ],
   };
-  return <Line data={data} />;
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    aspectRatio: 2,
+    layout: {
+      padding: {
+        top: 10,
+        right: 20,
+        bottom: 10,
+        left: 20,
+      },
+    },
+    elements: {
+      line: {
+        borderJoinStyle: "round" as const,
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+        labels: {
+          usePointStyle: true,
+          boxWidth: 6,
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.05)",
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="w-full h-[300px]">
+      <Line data={data} options={options} />
+    </div>
+  );
 };
 
-// Date Range Dropdown
-const DateRange: FC = () => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="outline">Date Range ▼</Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-      <DropdownMenuItem>This Week</DropdownMenuItem>
-      <DropdownMenuItem>This Month</DropdownMenuItem>
-      <DropdownMenuItem>Last Month</DropdownMenuItem>
-      <DropdownMenuItem>Custom Range</DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
 export default DistrictStatsChart;

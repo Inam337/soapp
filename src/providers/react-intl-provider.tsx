@@ -4,6 +4,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { IntlProvider, useIntl as useReactIntl } from "react-intl";
 import { getCookie } from "cookies-next";
 
+// Import translation files
+import enMessages from "@/locales/en.json";
+import esMessages from "@/locales/es.json";
+import frMessages from "@/locales/fr.json";
+import deMessages from "@/locales/de.json";
+import urMessages from "@/locales/ur.json";
+import { ensureTranslation } from "@/app/i18n-client";
+
 // Define RTL locales directly here since we removed them from middleware
 export const rtlLocales = ["ur"];
 
@@ -11,14 +19,24 @@ export const rtlLocales = ["ur"];
 export const supportedLocales = ["en", "es", "fr", "de", "ur"] as const;
 export type SupportedLocale = (typeof supportedLocales)[number];
 
+// Ensure critical translations are available
+ensureTranslation("app.title", "Sindh Ombudsman");
+ensureTranslation("app.version", "Version 1.0.0");
+
 // Load all translation messages
 const messages: Record<SupportedLocale, Record<string, string>> = {
-  en: require("@/locales/en.json"),
-  es: require("@/locales/es.json"),
-  fr: require("@/locales/fr.json"),
-  de: require("@/locales/de.json"),
-  ur: require("@/locales/ur.json"),
+  en: enMessages,
+  es: esMessages,
+  fr: frMessages,
+  de: deMessages,
+  ur: urMessages,
 };
+
+// Define an interface for IntlError
+interface IntlErrorType {
+  code: string;
+  message: string;
+}
 
 // Detect default locale
 function getDefaultLocale(): SupportedLocale {
@@ -88,6 +106,17 @@ export function ReactIntlProvider({ children }: { children: React.ReactNode }) {
     setLocaleState(newLocale);
   };
 
+  // Handle errors with missing translations
+  const handleIntlError = (error: IntlErrorType) => {
+    // Only log in development, suppress in production
+    if (
+      process.env.NODE_ENV === "development" &&
+      error.code === "MISSING_TRANSLATION"
+    ) {
+      console.warn(`[i18n] ${error.message}`);
+    }
+  };
+
   // Render with client-side values only after hydration
   return (
     <IntlContext.Provider
@@ -100,6 +129,8 @@ export function ReactIntlProvider({ children }: { children: React.ReactNode }) {
       <IntlProvider
         locale={locale}
         messages={isClient ? messages[locale] : messages.en}
+        onError={handleIntlError}
+        defaultLocale="en"
       >
         {children}
       </IntlProvider>

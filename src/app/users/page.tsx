@@ -1,24 +1,16 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useIntl } from "react-intl";
 import { useIntl as useAppIntl } from "@/providers/react-intl-provider";
 import { cn } from "@/lib/utils";
 import DashboardLayout from "@/components/main/sidebar-layout";
-import { useEffect, useState } from "react";
 
 export default function UsersPage() {
   const intl = useIntl();
   const { direction } = useAppIntl();
   const isRtl = direction === "rtl";
-
-  // Add client-side only rendering to avoid hydration mismatch
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const t = (id: string, defaultMessage: string = "") =>
     intl.formatMessage({ id, defaultMessage });

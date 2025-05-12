@@ -24,4 +24,6 @@ const ArrowChevronRightIcon: React.FC<IconType> = memo((props) => {
   );
 });
 
+ArrowChevronRightIcon.displayName = "ArrowChevronRightIcon";
+
 export { ArrowChevronRightIcon };

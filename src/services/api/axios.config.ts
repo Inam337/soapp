@@ -25,13 +25,13 @@ interface ApiErrorResponse {
   error?: string;
   errors?: Array<{ message: string }>;
   detail?: string;
-  [key: string]: any; // Allow additional properties
+  [key: string]: unknown; // Allow additional properties with unknown type
 }
 
 interface CustomError {
   message: string;
   status: number;
-  data?: any;
+  data?: unknown;
 }
 
 interface RefreshTokenResponse {

@@ -1,15 +1,18 @@
-const CustomSelectStyles = {
+import { StylesConfig } from "react-select";
+
+// Define our custom select styles
+const CustomSelectStyles: StylesConfig = {
   // Add any other styles you need here
-  menu: (provided: any) => ({
+  menu: (provided) => ({
     ...provided,
     zIndex: 9999, // Set the desired z-index value
   }),
   // Use the portal option to render the menu as a separate DOM element
-  menuPortal: (provided: any) => ({
+  menuPortal: (provided) => ({
     ...provided,
     zIndex: 9999, // Set the desired z-index value
   }),
-  control: (provided: any, state: any) => ({
+  control: (provided, state) => ({
     ...provided,
     border: "2px solid #3C7062",
     minHeight: "36px",
@@ -22,7 +25,7 @@ const CustomSelectStyles = {
     },
     height: "36px", // Set your desired height
   }),
-  option: (provided: any, state: any) => ({
+  option: (provided, state) => ({
     ...provided,
     fontSize: "12px",
     backgroundColor: state.isSelected
@@ -36,36 +39,36 @@ const CustomSelectStyles = {
       color: state.isSelected ? "#fff" : "#3C7062",
     },
   }),
-  singleValue: (provided: any, state: any) => ({
+  singleValue: (provided, state) => ({
     ...provided,
-    color: state.isFocused ? "#3C7062" : "#000",
+    color: state.isDisabled ? "#ccc" : "#000",
     transition: "color 0.2s",
     "&:hover": {
       color: "#3C7062",
     },
   }),
 
-  valueContainer: (provided: any) => ({
+  valueContainer: (provided) => ({
     ...provided,
     width: "140px",
     maxHeight: "36px",
     fontSize: "12px", // Set your desired height
     overflow: "auto",
   }),
-  multiValue: (provided: any) => ({
+  multiValue: (provided) => ({
     ...provided,
     backgroundColor: "#f3f3f3", // Set the background color of the tag
     borderRadius: "2px", // Optional: Set border radius for the tag
     // maxheight: '180px', // Set your desired height
     // overflow: 'auto',
   }),
-  multiValueLabel: (provided: any) => ({
+  multiValueLabel: (provided) => ({
     ...provided,
     color: "#000",
     fontSize: "12px", // Set the text color of the tag
   }),
 
-  multiValueRemove: (provided: any) => ({
+  multiValueRemove: (provided) => ({
     ...provided,
     ":hover": {
       backgroundColor: "#f3f3f3", // Set the background color of the tag
@@ -73,4 +76,5 @@ const CustomSelectStyles = {
     },
   }),
 };
+
 export default CustomSelectStyles;

@@ -6,6 +6,7 @@ import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useIntl as useReactIntl } from "react-intl";
 import {
@@ -103,6 +104,63 @@ const MainLayout = ({
     );
   };
 
+  // Header component that uses the sidebar context
+  const HeaderContent = () => {
+    const { state, isMobile } = useSidebar();
+
+    return (
+      <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center px-4 border-b bg-white shadow-sm">
+        <div
+          className={cn(
+            "flex w-full items-center justify-between",
+            isRtl && "flex-row-reverse"
+          )}
+        >
+          <div className="flex items-center justify-start gap-2">
+            {isMobile && (
+              <SidebarTrigger
+                className={cn(
+                  state === "collapsed" ? "mx-auto" : isRtl ? "mr-2" : "-ml-1"
+                )}
+              />
+            )}
+            <div
+              className={cn(
+                "flex items-center gap-2",
+                isRtl && "flex-row-reverse"
+              )}
+            >
+              {!isDashboardPage ? (
+                generateBreadcrumbs()
+              ) : (
+                <span className={cn("font-semibold", isRtl ? "font-urdu" : "")}>
+                  {t("sidebar.dashboard")}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {onLocaleChange ? (
+              <LanguageSwitcher
+                currentLocale={locale}
+                onLocaleChange={(newLocale) => {
+                  if (onLocaleChange) {
+                    // First, update the document direction
+                    const newDirection = newLocale === "ur" ? "rtl" : "ltr";
+                    document.documentElement.dir = newDirection;
+
+                    // Then call the parent's onLocaleChange
+                    onLocaleChange(newLocale);
+                  }
+                }}
+              />
+            ) : null}
+          </div>
+        </div>
+      </header>
+    );
+  };
+
   // Prepare translations for sidebar
   const sidebarTranslations = {
     appTitle: t("app.title"),
@@ -138,47 +196,7 @@ const MainLayout = ({
         translations={sidebarTranslations}
       />
       <SidebarInset className="flex flex-col flex-1 w-full h-full min-h-screen">
-        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center px-4 border-b bg-white shadow-sm">
-          <div
-            className={cn(
-              "flex w-full items-center justify-between",
-              isRtl && "flex-row-reverse"
-            )}
-          >
-            <div
-              className={cn(
-                "flex items-center gap-2",
-                isRtl && "flex-row-reverse"
-              )}
-            >
-              {/* <SidebarTrigger className={isRtl ? "mr-2" : "-ml-1"} /> */}
-              {!isDashboardPage ? (
-                generateBreadcrumbs()
-              ) : (
-                <span className={cn("font-semibold", isRtl ? "font-urdu" : "")}>
-                  {t("sidebar.dashboard")}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              {onLocaleChange ? (
-                <LanguageSwitcher
-                  currentLocale={locale}
-                  onLocaleChange={(newLocale) => {
-                    if (onLocaleChange) {
-                      // First, update the document direction
-                      const newDirection = newLocale === "ur" ? "rtl" : "ltr";
-                      document.documentElement.dir = newDirection;
-
-                      // Then call the parent's onLocaleChange
-                      onLocaleChange(newLocale);
-                    }
-                  }}
-                />
-              ) : null}
-            </div>
-          </div>
-        </header>
+        <HeaderContent />
         <main
           className={cn(
             "flex-1 p-6 overflow-auto",

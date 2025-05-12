@@ -1,26 +1,7 @@
 // Average Response Time Chart
-// Stats by District Chart
-import React, { FC, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement,
-  LineElement,
-} from "chart.js";
+import React, { FC } from "react";
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto";
 
 const AvgResponseChart: FC = () => {
   const data = {

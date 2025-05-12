@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import LoginBanner from "../../assets/logo/Banner.png";
-
+import LogoGreen from "../../assets/logo/green_logo.png";
 export default function OnboardingPage() {
   const intl = useReactIntl();
   const router = useRouter();
@@ -79,19 +79,27 @@ export default function OnboardingPage() {
             <div
               className={cn("flex", isRtl ? "justify-start" : "justify-end")}
             ></div>
+            <div className="w-full flex items-center justify-center">
+              <Image
+                src={LogoGreen}
+                alt="Login Banner"
+                className="object-contain m-0"
+                width={270}
+                height={96}
+              />
+            </div>
 
             {/* Logo + Welcome Text */}
             <div className={cn("text-center space-y-2", isRtl && "font-urdu")}>
-              <h1 className="text-2xl font-bold text-green-700">
-                {t("onboarding.title")}
-              </h1>
-              <p className="text-sm text-gray-700">{t("onboarding.welcome")}</p>
+              <p className="text-lg font-bold text-black">
+                {t("onboarding.welcome")}
+              </p>
             </div>
 
             {/* Options */}
             <div className="space-y-4">
               <Card
-                className="cursor-pointer hover:shadow-lg transition"
+                className="cursor-pointer hover:shadow-lg transition bg-primary text-white"
                 onClick={handleCardClick}
               >
                 <CardContent className="flex items-center justify-between">
@@ -103,12 +111,12 @@ export default function OnboardingPage() {
                     )}
                   >
                     {/* Icon */}
-                    <User className="text-green-600" />
+                    <User className="text-white" />
 
                     {/* Text */}
                     <div className={isRtl ? "text-right font-urdu" : ""}>
                       <p className="font-semibold">{t("onboarding.citizen")}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-white opacity-90">
                         {t("onboarding.citizen.description")}
                       </p>
                     </div>
@@ -116,15 +124,15 @@ export default function OnboardingPage() {
 
                   {/* Arrow - always at the end of the container */}
                   {isRtl ? (
-                    <ChevronLeft className="text-muted-foreground" />
+                    <ChevronLeft className="text-white" />
                   ) : (
-                    <ChevronRight className="text-muted-foreground" />
+                    <ChevronRight className="text-white" />
                   )}
                 </CardContent>
               </Card>
 
               <Card
-                className="cursor-pointer hover:shadow-lg transition"
+                className="cursor-pointer hover:shadow-lg transition bg-primary text-white"
                 onClick={handleCardClick}
               >
                 <CardContent className="flex items-center justify-between">
@@ -136,14 +144,14 @@ export default function OnboardingPage() {
                     )}
                   >
                     {/* Icon */}
-                    <Users className="text-green-600" />
+                    <Users className="text-white" />
 
                     {/* Text */}
                     <div className={isRtl ? "text-right font-urdu" : ""}>
                       <p className="font-semibold">
                         {t("onboarding.overseas")}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-white opacity-90">
                         {t("onboarding.overseas.description")}
                       </p>
                     </div>
@@ -151,15 +159,15 @@ export default function OnboardingPage() {
 
                   {/* Arrow - always at the end of the container */}
                   {isRtl ? (
-                    <ChevronLeft className="text-muted-foreground" />
+                    <ChevronLeft className="text-white" />
                   ) : (
-                    <ChevronRight className="text-muted-foreground" />
+                    <ChevronRight className="text-white" />
                   )}
                 </CardContent>
               </Card>
 
               <Card
-                className="cursor-pointer hover:shadow-lg transition"
+                className="cursor-pointer hover:shadow-lg transition bg-primary text-white"
                 onClick={handleCardClick}
               >
                 <CardContent className="flex items-center justify-between">
@@ -171,14 +179,14 @@ export default function OnboardingPage() {
                     )}
                   >
                     {/* Icon */}
-                    <Globe className="text-green-600" />
+                    <Globe className="text-white" />
 
                     {/* Text */}
                     <div className={isRtl ? "text-right font-urdu" : ""}>
                       <p className="font-semibold">
                         {t("onboarding.foreigner")}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-white opacity-90">
                         {t("onboarding.foreigner.description")}
                       </p>
                     </div>
@@ -186,9 +194,9 @@ export default function OnboardingPage() {
 
                   {/* Arrow - always at the end of the container */}
                   {isRtl ? (
-                    <ChevronLeft className="text-muted-foreground" />
+                    <ChevronLeft className="text-white" />
                   ) : (
-                    <ChevronRight className="text-muted-foreground" />
+                    <ChevronRight className="text-white" />
                   )}
                 </CardContent>
               </Card>
@@ -200,8 +208,11 @@ export default function OnboardingPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className={isRtl ? "mr-2" : "ml-2"}
-                onClick={() => router.push("/dashboard")}
+                className={cn(
+                  "border-green-600 text-green-600 hover:bg-green-50",
+                  isRtl ? "mr-2" : "ml-2"
+                )}
+                onClick={() => router.push("/login")}
               >
                 {t("onboarding.login.button")}
               </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useIntl as useReactIntl } from "react-intl";
@@ -49,14 +49,9 @@ interface FormValues {
 
 export default function RegisterForm() {
   const intl = useReactIntl();
-  const { locale, direction, setLocale } = useIntl();
+  const { direction } = useIntl();
   const isRtl = direction === "rtl";
   const [date, setDate] = useState<Date | undefined>();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const t = (id: string, defaultMessage: string = "") =>
     intl.formatMessage({ id, defaultMessage });
@@ -211,7 +206,7 @@ export default function RegisterForm() {
   ];
 
   return (
-    <div className={cn("w-full max-w-3xl p-4", isRtl && "rtl")}>
+    <div className={cn("w-full max-w-3xl py-4 mt-4 ", isRtl && "rtl")}>
       <div className="flex justify-between items-center mb-6">
         <h1 className={cn("text-2xl font-bold", isRtl && "text-right")}>
           {t("register.title", "Citizen Registration")}
@@ -797,7 +792,7 @@ export default function RegisterForm() {
           </Button>
           <Button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
+            className="bg-primary hover:bg-green-700 w-full sm:w-auto"
           >
             {t("register.submit", "Register")}
           </Button>
@@ -806,4 +801,3 @@ export default function RegisterForm() {
     </div>
   );
 }
- 

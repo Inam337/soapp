@@ -1,13 +1,4 @@
-import React, { FC, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import React, { FC } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -125,7 +116,9 @@ const DashboardComponent: FC = () => {
           <AvgResponseChart />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 rounded-xl shadow-sm">
+      <div className="grid grid-cols-1 gap-1 p-4 rounded-xl shadow-sm">
+        <h3 className="text-lg font-semibold">Stats Districts Chart</h3>
+        <p className="text-sm text-gray-500">Top 5 Districts</p>
         <DistrictStatsChart />
       </div>
     </div>

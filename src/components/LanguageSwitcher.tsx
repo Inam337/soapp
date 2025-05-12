@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Check, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +50,6 @@ export function LanguageSwitcher({
           size="sm"
         >
           <div className="flex items-center">
-            <Languages className="mr-2 h-4 w-4" />
             <span className="flex items-center">
               <span className="mr-1">{currentLanguage.flag}</span>
               <span>{currentLanguage.name}</span>

@@ -42,10 +42,7 @@ const authSlice = createSlice({
   initialState: getInitialState(),
   reducers: {
     // Login actions
-    login: (
-      state,
-      action: PayloadAction<{ email: string; password: string }>
-    ) => {
+    login: (state, _: PayloadAction<{ email: string; password: string }>) => {
       state.loading = true;
       state.error = null;
     },
@@ -67,7 +64,7 @@ const authSlice = createSlice({
     // Register actions
     register: (
       state,
-      action: PayloadAction<{
+      _: PayloadAction<{
         name: string;
         email: string;
         password: string;
@@ -80,7 +77,7 @@ const authSlice = createSlice({
     },
     registerSuccess: (
       state,
-      action: PayloadAction<{ user: User; token: string; refreshToken: string }>
+      _: PayloadAction<{ user: User; token: string; refreshToken: string }>
     ) => {
       state.loading = false;
       state.error = null;

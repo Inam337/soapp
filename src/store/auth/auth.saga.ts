@@ -24,6 +24,13 @@ import {
 import { AuthService } from "@/services/api/auth.service";
 import { toast } from "react-toastify";
 
+// Define a custom error interface
+interface ApiError {
+  message: string;
+  status?: number;
+  code?: string;
+}
+
 function* loginSaga(
   action: PayloadAction<LoginCredentials>
 ): SagaIterator<void> {
@@ -65,11 +72,14 @@ function* loginSaga(
 
     // Using window.location.href for a full page reload which can help with state reset issues
     window.location.href = "/dashboard";
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Login saga error:", error);
 
+    // Cast to our custom error type or use a safe fallback
+    const apiError = error as ApiError;
+
     // Check specifically for inactive user error or other specific errors
-    if (error.message && error.message.includes("User is inactive")) {
+    if (apiError.message && apiError.message.includes("User is inactive")) {
       console.log("Login attempt by inactive user");
       yield put(
         loginFailure(
@@ -80,8 +90,8 @@ function* loginSaga(
         "Account is inactive. Please contact the administrator to activate your account."
       );
     } else {
-      yield put(loginFailure(error.message || "Login failed"));
-      toast.error(error.message || "Login failed");
+      yield put(loginFailure(apiError.message || "Login failed"));
+      toast.error(apiError.message || "Login failed");
     }
   }
 }
@@ -113,10 +123,11 @@ function* registerSaga(
 
     // Redirect to login page after successful registration
     window.location.href = "/auth/login";
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Registration saga error:", error);
-    yield put(registerFailure(error.message || "Registration failed"));
-    toast.error(error.message || "Registration failed");
+    const apiError = error as ApiError;
+    yield put(registerFailure(apiError.message || "Registration failed"));
+    toast.error(apiError.message || "Registration failed");
   }
 }
 
@@ -133,10 +144,11 @@ function* logoutSaga(): SagaIterator<void> {
 
     // Redirect to login page after logout
     window.location.href = "/auth/login";
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Logout saga error:", error);
-    yield put(logoutFailure(error.message || "Logout failed"));
-    toast.error(error.message || "Logout failed");
+    const apiError = error as ApiError;
+    yield put(logoutFailure(apiError.message || "Logout failed"));
+    toast.error(apiError.message || "Logout failed");
 
     // Even if the API call fails, we still want to log the user out locally
     yield put(logoutSuccess());
@@ -158,8 +170,9 @@ function* refreshTokenSaga(): SagaIterator<void> {
     );
 
     yield put(refreshTokenSuccess(response));
-  } catch (error: any) {
-    yield put(refreshTokenFailure(error.message || "Token refresh failed"));
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    yield put(refreshTokenFailure(apiError.message || "Token refresh failed"));
 
     // If refresh token fails, log the user out
     yield put(logout());
