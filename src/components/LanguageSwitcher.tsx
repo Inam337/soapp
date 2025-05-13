@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-
+import { CommonIconNames, IconColors } from "@/common/icons/types";
+import { CommonIcon } from "@/common/icons";
 // Define supported locales
 export const supportedLocales = ["en", "es", "fr", "de", "ur"] as const;
 export type SupportedLocale = (typeof supportedLocales)[number];
@@ -36,7 +37,7 @@ export function LanguageSwitcher({
     onLocaleChange(newLocale);
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
   };
-
+  const ICON_SIZE = 18;
   // Find current language data
   const currentLanguage =
     languages.find((lang) => lang.code === currentLocale) || languages[0];
@@ -46,14 +47,33 @@ export function LanguageSwitcher({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex w-full items-center justify-between border-2"
+          className="flex w-full items-center justify-between border-2 relative pl-6 pr-6"
           size="sm"
         >
+          <div className="absolute top-2 left-1 z-20">
+            <CommonIcon
+              width={ICON_SIZE}
+              height={ICON_SIZE}
+              name={CommonIconNames.LANGUAGE_ICON}
+              fill={IconColors.BLACK_COLOR_ICON}
+              className="w-4 h-4 flex items-center justify-center mr-2"
+            />
+          </div>
+
           <div className="flex items-center">
             <span className="flex items-center">
               <span className="mr-1">{currentLanguage.flag}</span>
               <span>{currentLanguage.name}</span>
             </span>
+          </div>
+          <div className="absolute top-2 right-1 z-20">
+            <CommonIcon
+              width={ICON_SIZE}
+              height={ICON_SIZE}
+              name={CommonIconNames.ARROW_DOWN_ICON}
+              fill={IconColors.BLACK_COLOR_ICON}
+              className="w-4 h-4 flex items-center justify-center"
+            />
           </div>
         </Button>
       </DropdownMenuTrigger>

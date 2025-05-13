@@ -31,6 +31,8 @@ export enum CommonIconNames {
   USER_ICON = "USER_ICON",
   USERS_ICON = "USERS_ICON",
   VIEW_ICON = "VIEW_ICON",
+  WORLD_ICON = "WORLD_ICON",
+  ARROW_DOWN_ICON = "ARROW_DOWN_ICON",
 }
 
 export interface IconType {
@@ -41,11 +43,12 @@ export interface IconType {
 }
 
 export interface IconProps extends IconType {
-  name: CommonIconNames;
+  name?: CommonIconNames;
 }
 
 export const IconColors = {
   WHITE_COLOR_ICON: "#FFFFFF",
+  BLACK_COLOR_ICON: "#000000",
   GRAY_COLOR_ICON: "#9CA3AF",
   PRIMARY_COLOR_ICON: "#059669",
   HAM_BURGER_ARROW: "#FFFFFF",

@@ -25,6 +25,8 @@ import { SuspendIcon } from "./suspend.icon";
 import { UserIcon } from "./user.icon";
 import { UsersIcon } from "./users.icon";
 import { ViewIcon } from "./view.icon";
+import { WorldIcon } from "./world.icon";
+import { ArrowDownIcon } from "./arrow-down.icon";
 export const CommonIcon: React.FC<IconProps> = memo((props) => {
   const { name } = props;
 
@@ -79,6 +81,10 @@ export const CommonIcon: React.FC<IconProps> = memo((props) => {
       return <UsersIcon {...props} />;
     case CommonIconNames.VIEW_ICON:
       return <ViewIcon {...props} />;
+    case CommonIconNames.WORLD_ICON:
+      return <WorldIcon {...props} />;
+    case CommonIconNames.ARROW_DOWN_ICON:
+      return <ArrowDownIcon {...props} />;
     default:
       return null;
   }
